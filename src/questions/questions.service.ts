@@ -1,10 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { Repository } from 'typeorm';
+import { Question } from './entities/question.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class QuestionsService {
-  create(createQuestionDto: CreateQuestionDto) {
+  constructor(
+    @InjectRepository(Question)
+    private readonly questionRepository: Repository<Question>,
+  ) {}
+
+  async create(createQuestionDto: CreateQuestionDto) {
+    if (!createQuestionDto.question || !createQuestionDto.answer)
+      throw new BadRequestException('Заполните, пожалуйста все поля');
     return 'This action adds a new question';
   }
 

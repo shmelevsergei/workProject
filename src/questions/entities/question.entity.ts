@@ -16,7 +16,7 @@ export class Question {
   question: string;
 
   @Column()
-  variant_answer: number;
+  answer: number;
 
   @OneToOne(() => Answer, (answer) => answer.question, { onDelete: 'CASCADE' })
   @CreateDateColumn()
