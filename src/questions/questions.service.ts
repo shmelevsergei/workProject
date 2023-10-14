@@ -15,6 +15,11 @@ export class QuestionsService {
   async create(createQuestionDto: CreateQuestionDto) {
     if (!createQuestionDto.question || !createQuestionDto.answer)
       throw new BadRequestException('Заполните, пожалуйста все поля');
+
+    const newQuestion = {
+      question: createQuestionDto.question,
+      answer: createQuestionDto.answer,
+    };
     return 'This action adds a new question';
   }
 
