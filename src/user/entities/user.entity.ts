@@ -1,7 +1,10 @@
+import { Person } from 'src/persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,4 +25,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne(() => Person, (person) => person.user, {
+    onDelete: 'CASCADE',
+  })
+  person: Person;
 }

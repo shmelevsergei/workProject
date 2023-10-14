@@ -1,12 +1,9 @@
-import { Question } from 'src/questions/entities/question.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -25,10 +22,6 @@ export class Answer {
 
   @Column()
   variant_4: string;
-
-  @OneToOne(() => Question, (question) => question.id)
-  @JoinColumn({ name: 'question_id' })
-  question: Question;
 
   @CreateDateColumn()
   createdAt: Date;

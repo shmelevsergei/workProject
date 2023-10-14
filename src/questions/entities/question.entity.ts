@@ -1,11 +1,8 @@
-import { Answer } from 'src/answers/entities/answer.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
 } from 'typeorm';
 @Entity()
 export class Question {
@@ -16,11 +13,7 @@ export class Question {
   question: string;
 
   @Column()
-  answer: number;
-
-  @OneToOne(() => Answer, (answer) => answer.question, { onDelete: 'CASCADE' })
-  @CreateDateColumn()
-  createdAt: Date;
+  variant: number;
 
   @UpdateDateColumn()
   updatedAt: Date;
