@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
@@ -18,11 +28,13 @@ export class PersonsController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.personsService.findOne(+id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updatePersonDto: UpdatePersonDto) {
     return this.personsService.update(+id, updatePersonDto);
   }

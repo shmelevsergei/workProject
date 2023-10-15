@@ -31,7 +31,6 @@ import { PersonsModule } from './persons/persons.module';
       }),
       inject: [ConfigService],
     }),
-
     PersonsModule,
   ],
   controllers: [AppController],
