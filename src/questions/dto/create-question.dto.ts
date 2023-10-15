@@ -1,7 +1,9 @@
 import { IsNotEmpty } from 'class-validator';
-import { Answer } from 'src/answers/entities/answer.entity';
 
 export class CreateQuestionDto {
+  @IsNotEmpty()
+  id: number;
+
   @IsNotEmpty()
   question: string;
 
@@ -9,5 +11,14 @@ export class CreateQuestionDto {
   variant: number;
 
   @IsNotEmpty()
-  answers: Answer;
+  variant_1: string;
+
+  @IsNotEmpty()
+  variant_2: string;
+
+  @IsNotEmpty()
+  variant_3: string;
+
+  @IsNotEmpty()
+  variant_4: string;
 }

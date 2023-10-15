@@ -4,55 +4,70 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Repository } from 'typeorm';
 import { Question } from './entities/question.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Answer } from 'src/answers/entities/answer.entity';
 
 @Injectable()
 export class QuestionsService {
   constructor(
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
-    @InjectRepository(Answer)
-    private readonly answerRepository: Repository<Answer>,
   ) {}
 
   async create(createQuestionDto: CreateQuestionDto) {
     if (
       !createQuestionDto.question ||
       !createQuestionDto.variant ||
-      !createQuestionDto.answers.variant_1 ||
-      !createQuestionDto.answers.variant_2 ||
-      !createQuestionDto.answers.variant_3 ||
-      !createQuestionDto.answers.variant_4
+      !createQuestionDto.variant_1 ||
+      !createQuestionDto.variant_2 ||
+      !createQuestionDto.variant_3 ||
+      !createQuestionDto.variant_4
     )
-      throw new BadRequestException('Заполните, пожалуйста все поля');
+      throw new BadRequestException('Заполните, пожалуйста, все поля');
 
     const newQuestion = await this.questionRepository.save({
       question: createQuestionDto.question,
       variant: createQuestionDto.variant,
+      variant_1: createQuestionDto.variant_1,
+      variant_2: createQuestionDto.variant_2,
+      variant_3: createQuestionDto.variant_3,
+      variant_4: createQuestionDto.variant_4,
     });
 
-    const newAnswers = await this.answerRepository.save({
-      variant_1: createQuestionDto.answers.variant_1,
-      variant_2: createQuestionDto.answers.variant_2,
-      variant_3: createQuestionDto.answers.variant_3,
-      variant_4: createQuestionDto.answers.variant_4,
+    return { newQuestion };
+  }
+
+  async findAll() {
+    const questions = await this.questionRepository.find();
+    return questions;
+  }
+
+  async findOne(id: number) {
+    const question = await this.questionRepository.findOne({
+      where: { id },
     });
-    return { newQuestion, newAnswers };
+    if (!question)
+      throw new BadRequestException('Такого вопроса не существует');
+    return question;
   }
 
-  findAll() {
-    return `This action returns all questions`;
+  async update(id: number, updateQuestionDto: UpdateQuestionDto) {
+    const question = await this.questionRepository.findOne({
+      where: { id },
+    });
+
+    if (!question)
+      throw new BadRequestException('Такого вопроса не существует');
+
+    return await this.questionRepository.update(id, updateQuestionDto);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
-  }
+  async remove(id: number) {
+    const question = await this.questionRepository.findOne({
+      where: { id },
+    });
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
-  }
+    if (!question)
+      throw new BadRequestException('Такого вопроса не существует');
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+    return await this.questionRepository.delete(id);
   }
 }

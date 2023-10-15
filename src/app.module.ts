@@ -7,7 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { QuestionsModule } from './questions/questions.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AnswersModule } from './answers/answers.module';
+
 import { PersonsModule } from './persons/persons.module';
 
 @Module({
@@ -31,7 +31,7 @@ import { PersonsModule } from './persons/persons.module';
       }),
       inject: [ConfigService],
     }),
-    AnswersModule,
+
     PersonsModule,
   ],
   controllers: [AppController],
