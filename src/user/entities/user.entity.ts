@@ -1,33 +1,35 @@
-import { Person } from 'src/persons/entities/person.entity';
+import { Person } from 'src/persons/entities/person.entity'
+import { Rating } from 'src/rating/entities/rating.entity'
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from 'typeorm'
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  email: string;
+  email: string
 
   @Column()
-  password: string;
+  password: string
+
+  @OneToMany(() => Rating, (rating) => rating.user, { onDelete: 'CASCADE' })
+  ratings: Rating[]
+
+  @OneToOne(() => Person, (person) => person.user, { onDelete: 'CASCADE' })
+  person: Person
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
-
-  @OneToOne(() => Person, (person) => person.user, {
-    onDelete: 'CASCADE',
-  })
-  person: Person;
+  updatedAt: Date
 }

@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRatingDto } from './dto/create-rating.dto';
-import { UpdateRatingDto } from './dto/update-rating.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Rating } from './entities/rating.entity';
-import { Repository } from 'typeorm';
+import { Injectable, BadRequestException } from '@nestjs/common'
+import { CreateRatingDto } from './dto/create-rating.dto'
+import { UpdateRatingDto } from './dto/update-rating.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Rating } from './entities/rating.entity'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class RatingService {
@@ -11,23 +11,44 @@ export class RatingService {
     @InjectRepository(Rating)
     private readonly ratingRepository: Repository<Rating>,
   ) {}
-  async create(createRatingDto: CreateRatingDto) {
-    return 'This action adds a new rating';
+  async create(createRatingDto: CreateRatingDto, id: number) {
+    const rating = {
+      value: createRatingDto.value,
+      person: { id: +createRatingDto.person },
+      user: { id },
+    }
+
+    if (!rating) throw new BadRequestException('Упс, что-то пошло не так!')
+    return await this.ratingRepository.save(rating)
   }
 
-  findAll() {
-    return `This action returns all rating`;
+  async findAll(id: number) {
+    const ratings = await this.ratingRepository.find({
+      where: {
+        user: { id },
+      },
+      relations: {
+        person: true,
+      },
+    })
+    return ratings
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rating`;
-  }
+  async findAllWithPagination(id: number, page: number, limit: number) {
+    const ratings = await this.ratingRepository.find({
+      where: {
+        user: { id },
+      },
+      relations: {
+        person: true,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+    })
 
-  update(id: number, updateRatingDto: UpdateRatingDto) {
-    return `This action updates a #${id} rating`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} rating`;
+    return ratings
   }
 }

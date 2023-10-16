@@ -1,13 +1,29 @@
+import { IsNotEmpty, IsOptional } from 'class-validator'
+import { Rating } from 'src/rating/entities/rating.entity'
+import { User } from 'src/user/entities/user.entity'
+
 export class CreatePersonDto {
-  station: string;
+  @IsNotEmpty()
+  station: string
 
-  name: string;
+  @IsNotEmpty()
+  name: string
 
-  surname: string;
+  @IsNotEmpty()
+  surname: string
 
-  phone: string;
+  @IsNotEmpty()
+  phone: string
 
-  email: string;
+  @IsNotEmpty()
+  email: string
 
-  city: string;
+  @IsNotEmpty()
+  city: string
+
+  @IsNotEmpty()
+  user: User
+
+  @IsOptional()
+  rating?: Rating
 }

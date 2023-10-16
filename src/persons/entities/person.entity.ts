@@ -1,5 +1,5 @@
-import { Rating } from 'src/rating/entities/rating.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Rating } from 'src/rating/entities/rating.entity'
+import { User } from 'src/user/entities/user.entity'
 import {
   Column,
   CreateDateColumn,
@@ -9,40 +9,41 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from 'typeorm'
 
 @Entity()
 export class Person {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({ name: 'person_id' })
+  id: number
 
   @Column()
-  station: string;
+  station: string
 
   @Column()
-  name: string;
+  name: string
 
   @Column()
-  surname: string;
+  surname: string
 
   @Column()
-  phone: string;
+  phone: string
 
   @Column()
-  email: string;
+  email: string
 
   @Column()
-  city: string;
-
-  @OneToMany(() => Rating, (rating) => rating.person)
-  ratings: Rating[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  city: string
 
   @OneToOne(() => User, (user) => user.person)
-  user: User;
+  @JoinColumn({ name: 'user_id' })
+  user: User
+
+  @OneToMany(() => Rating, (rating) => rating.person)
+  ratings: Rating[]
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
 }
