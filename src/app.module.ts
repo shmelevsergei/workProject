@@ -1,14 +1,14 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { RatingModule } from './rating/rating.module';
-import { AuthModule } from './auth/auth.module';
-import { QuestionsModule } from './questions/questions.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from '@nestjs/common'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { UserModule } from './user/user.module'
+import { RatingModule } from './rating/rating.module'
+import { AuthModule } from './auth/auth.module'
+import { QuestionsModule } from './questions/questions.module'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { PersonsModule } from './persons/persons.module';
+import { PersonsModule } from './persons/persons.module'
 
 @Module({
   imports: [
