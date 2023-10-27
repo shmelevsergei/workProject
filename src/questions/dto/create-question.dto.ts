@@ -1,24 +1,24 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator'
 
 export class CreateQuestionDto {
   @IsNotEmpty()
-  id: number;
+  id: number
 
   @IsNotEmpty()
-  question: string;
+  question: string
 
   @IsNotEmpty()
-  variant: number;
+  variant: string
 
   @IsNotEmpty()
-  variant_1: string;
+  variant_1: string
 
   @IsNotEmpty()
-  variant_2: string;
+  variant_2: string
 
   @IsNotEmpty()
-  variant_3: string;
+  variant_3: string
 
   @IsNotEmpty()
-  variant_4: string;
+  variant_4: string
 }

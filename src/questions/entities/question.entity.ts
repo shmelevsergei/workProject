@@ -1,36 +1,37 @@
 import {
+  Column,
+  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  Column,
   UpdateDateColumn,
-  CreateDateColumn,
-} from 'typeorm';
+} from 'typeorm'
+
 @Entity()
 export class Question {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  question: string;
+  question: string
 
   @Column()
-  variant: number;
+  variant: string
 
   @Column()
-  variant_1: string;
+  variant_1: string
 
   @Column()
-  variant_2: string;
+  variant_2: string
 
   @Column()
-  variant_3: string;
+  variant_3: string
 
   @Column()
-  variant_4: string;
+  variant_4: string
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 
   @CreateDateColumn()
-  createAt: Date;
+  createAt: Date
 }
