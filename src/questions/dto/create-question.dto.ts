@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator'
+import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateQuestionDto {
   @IsNotEmpty()
@@ -21,4 +21,13 @@ export class CreateQuestionDto {
 
   @IsNotEmpty()
   variant_4: string
+
+  @IsNotEmpty()
+  variant_5: string
+
+  @IsNotEmpty()
+  complexity: string
+
+  @IsOptional()
+  link?: string
 }

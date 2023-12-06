@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt'
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from './entities/user.entity'
@@ -21,10 +21,14 @@ export class UserService {
     })
     if (existUser) throw new BadRequestException('Этот email уже используется!')
 
-    const user = await this.userRepository.save({
+    await this.userRepository.save({
       email: createUserDto.email,
       password: await argon2.hash(createUserDto.password),
     })
+
+    const user = {
+      email: createUserDto.email,
+    }
 
     const token = this.jwtService.sign({ email: createUserDto.email })
 

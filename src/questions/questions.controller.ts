@@ -1,15 +1,15 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-} from '@nestjs/common';
-import { QuestionsService } from './questions.service';
-import { CreateQuestionDto } from './dto/create-question.dto';
-import { UpdateQuestionDto } from './dto/update-question.dto';
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common'
+import { QuestionsService } from './questions.service'
+import { CreateQuestionDto } from './dto/create-question.dto'
+import { UpdateQuestionDto } from './dto/update-question.dto'
 
 @Controller('questions')
 export class QuestionsController {
@@ -17,17 +17,23 @@ export class QuestionsController {
 
   @Post()
   create(@Body() createQuestionDto: CreateQuestionDto) {
-    return this.questionsService.create(createQuestionDto);
+    return this.questionsService.create(createQuestionDto)
   }
 
   @Get()
   findAll() {
-    return this.questionsService.findAll();
+    return this.questionsService.findAll()
+  }
+
+  @Get('sorted-list')
+  async getSortedQuestions() {
+    const sortedQuestions = await this.questionsService.generateQuestions()
+    return sortedQuestions
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.questionsService.findOne(+id);
+    return this.questionsService.findOne(+id)
   }
 
   @Patch(':id')
@@ -35,11 +41,11 @@ export class QuestionsController {
     @Param('id') id: string,
     @Body() updateQuestionDto: UpdateQuestionDto,
   ) {
-    return this.questionsService.update(+id, updateQuestionDto);
+    return this.questionsService.update(+id, updateQuestionDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.questionsService.remove(+id);
+    return this.questionsService.remove(+id)
   }
 }

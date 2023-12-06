@@ -21,8 +21,8 @@ export class CreatePersonDto {
   @IsNotEmpty()
   city: string
 
-  @IsNotEmpty()
-  user: User
+  @IsOptional()
+  user?: User
 
   @IsOptional()
   rating?: Rating

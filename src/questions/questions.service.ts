@@ -15,10 +15,12 @@ export class QuestionsService {
   async create(createQuestionDto: CreateQuestionDto) {
     if (
       !createQuestionDto.question ||
-      !createQuestionDto.variant_4 ||
       !createQuestionDto.variant_1 ||
       !createQuestionDto.variant_2 ||
-      !createQuestionDto.variant_3
+      !createQuestionDto.variant_3 ||
+      !createQuestionDto.variant_4 ||
+      !createQuestionDto.variant_5 ||
+      !createQuestionDto.complexity
     )
       throw new BadRequestException('Заполните, пожалуйста, все поля!')
 
@@ -32,6 +34,9 @@ export class QuestionsService {
       variant_2: createQuestionDto.variant_2.toString(),
       variant_3: createQuestionDto.variant_3.toString(),
       variant_4: createQuestionDto.variant_4.toString(),
+      variant_5: createQuestionDto.variant_5.toString(),
+      link: createQuestionDto.link.toString(),
+      complexity: createQuestionDto.complexity.toString(),
     })
 
     return { newQuestion }
@@ -68,5 +73,73 @@ export class QuestionsService {
     if (!question) throw new BadRequestException('Такого вопроса не существует')
 
     return await this.questionRepository.delete(id)
+  }
+
+  async getQuestionsByComplexity(complexity: string, quantity: number) {
+    const allAvailableQuestions = await this.questionRepository.find({
+      where: { complexity },
+    })
+
+    const availableQuestionsCount = allAvailableQuestions.length
+
+    if (availableQuestionsCount <= quantity) {
+      // Возвращаем все доступные вопросы заданной сложности
+      return allAvailableQuestions
+    } else {
+      // Формируем случайный список вопросов до достижения запрошенного количества
+      const selectedQuestions: Question[] = []
+      const usedIndexes: Set<number> = new Set()
+
+      while (selectedQuestions.length < quantity) {
+        const randomIndex = Math.floor(Math.random() * availableQuestionsCount)
+
+        if (!usedIndexes.has(randomIndex)) {
+          selectedQuestions.push(allAvailableQuestions[randomIndex])
+          usedIndexes.add(randomIndex)
+        }
+      }
+
+      return selectedQuestions
+    }
+  }
+
+  async getQuestionsByComplexitiesQuantities(quantities: Map<string, number>) {
+    const questionsByComplexity = new Map<string, Question[]>()
+
+    for (const [complexity, quantity] of quantities) {
+      const availableQuestions = await this.questionRepository.count({
+        where: { complexity },
+      })
+      const selectedQuantity = Math.min(quantity, availableQuestions)
+
+      const questions = await this.getQuestionsByComplexity(
+        complexity,
+        selectedQuantity,
+      )
+      questionsByComplexity.set(complexity, questions)
+    }
+
+    return questionsByComplexity
+  }
+
+  async generateQuestions() {
+    const quantities = new Map<string, number>([
+      ['easy', 10],
+      ['normal', 10],
+      ['hard', 10],
+      ['superGame', 5],
+    ])
+
+    const questionsByComplexity = new Map<string, Question[]>()
+
+    for (const [complexity, quantity] of quantities) {
+      const questions = await this.getQuestionsByComplexity(
+        complexity,
+        quantity,
+      )
+      questionsByComplexity.set(complexity, questions)
+    }
+
+    return Object.fromEntries(questionsByComplexity)
   }
 }

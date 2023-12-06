@@ -11,6 +11,7 @@ export class PersonsService {
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
   ) {}
+
   async create(createPersonDto: CreatePersonDto, email: string, id: number) {
     const person = {
       station: createPersonDto.station,
@@ -28,20 +29,21 @@ export class PersonsService {
     const persons = await this.personRepository.find({
       relations: {
         ratings: true,
+        user: true,
       },
     })
     if (!persons) throw new BadRequestException('Нет ни одного пользователя!')
     return persons
   }
 
-  async findOne(id: number) {
+  async findOne(user_id: number) {
     const person = await this.personRepository.findOne({
-      where: { id },
+      where: { user: { id: user_id } },
       relations: {
         ratings: true,
       },
     })
-    if (!person) throw new BadRequestException('Поьзователь не найден')
+    if (!person) throw new BadRequestException('Пользователь не найден')
     return person
   }
 

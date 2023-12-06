@@ -1,11 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
-  Body,
-  UseGuards,
-  Req,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common'
 import { RatingService } from './rating.service'
 import { CreateRatingDto } from './dto/create-rating.dto'

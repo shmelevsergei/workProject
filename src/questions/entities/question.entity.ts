@@ -11,7 +11,7 @@ export class Question {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ type: 'text' })
   question: string
 
   @Column()
@@ -28,6 +28,15 @@ export class Question {
 
   @Column()
   variant_4: string
+
+  @Column()
+  variant_5: string
+
+  @Column({ default: 'easy' })
+  complexity: string
+
+  @Column()
+  link: string
 
   @UpdateDateColumn()
   updatedAt: Date
